@@ -1,0 +1,329 @@
+/* ============================================================================
+   ContextLock additions to the landing page
+   ----------------------------------------------------------------------------
+   Kept in its own file rather than edited into the scraped Webflow stylesheets,
+   so what belongs to this product is always separable from what came with the
+   template. Loaded last, so it wins on equal specificity without !important.
+
+   Everything here uses the site's own tokens (--color, --soft, --white) and its
+   own faces (var(--medium), var(--serif)) — the landing's look is the source of
+   truth for the whole product, not the other way round.
+   ========================================================================== */
+
+/* --- hero wordmark --------------------------------------------------------
+   The template set this at a fixed 5.1rem, which left most of the hero empty
+   on a desktop screen. Sized against the viewport instead so it fills the space
+   it has, with the letter-spacing scaling alongside — spacing kept at a fixed
+   3rem would shred the word on a phone. */
+.hero__title__h1 {
+  font-size: clamp(3rem, 15vw, 19rem);
+  letter-spacing: clamp(0.5rem, 2.6vw, 2.6rem);
+  line-height: 1;
+}
+
+/* The eyebrow was left at the template's fixed 1.9rem while the wordmark
+   beneath it grew, which made it look like a caption rather than a claim. */
+.hero__subt__text {
+  font-size: clamp(1.5rem, 2.3vw, 3rem);
+  letter-spacing: 0.01em;
+}
+
+.hero__title {
+  grid-column-gap: clamp(1rem, 3.4vw, 4.4rem);
+  grid-row-gap: clamp(0.4rem, 2vw, 1.6rem);
+  flex-wrap: wrap;
+  margin-top: clamp(1rem, 3vh, 2.5rem);
+}
+
+/* The trailing letter-space pushes the word visually off-centre; pulling it
+   back by half keeps the pair optically centred at every size. */
+.hero__title__h1 { margin-right: calc(clamp(0.7rem, 3vw, 3rem) * -0.5); }
+
+
+/* ============================================================================
+   Word spacing in split headings
+   ----------------------------------------------------------------------------
+   Every animated heading is exploded one <div> per letter, grouped one
+   .js-words per word. In JSX, whitespace between elements on separate lines is
+   stripped, so the scrape lost every word break and the page rendered
+   "SLEEPISNTALUXURY". The original CSS never spaced them because in the live
+   site the split happened at runtime, where the text nodes still carried their
+   spaces.
+
+   A margin on each word after the first restores the gap, scales with the type
+   because it is in em, and does not disturb the per-letter animation.
+   ========================================================================== */
+.js-words + .js-words { margin-left: 0.3em; }
+
+/* Uppercase eyebrows already carry wide letter-spacing, so the same em gap
+   reads as too tight against it. */
+.subtitle__text .js-words + .js-words { margin-left: 0.55em; }
+
+/* ============================================================================
+   Display face for the hero wordmark
+   ========================================================================== */
+@font-face {
+  font-family: "Security Company";
+  src: url("/fonts/Security%20Company.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  /* swap: the wordmark is the first thing painted, so showing it in the
+     fallback beats holding the hero blank while a 735KB face downloads. */
+  font-display: swap;
+}
+
+.hero__title__h1 {
+  font-family: "Security Company", Editorial, Georgia, serif;
+}
+
+/* --- hero call to action -------------------------------------------------- */
+.cl-hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 1.6vw, 24px);
+  margin-top: clamp(2.6rem, 6vh, 5.5rem);
+}
+
+.cl-hero-cta__primary,
+.cl-hero-cta__secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.05em 2.9em;
+  border-radius: 999px;
+  font-size: clamp(1.15rem, 1.7vw, 1.85rem);
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+/* The hero sits on the deep blue 3D scene, not on the cream ground, so these
+   take the cream treatment the wordmark above them already uses. Styled blue
+   they were blue-on-blue: the primary barely separated and the secondary was
+   very nearly invisible. */
+.cl-hero-cta__primary {
+  background: var(--soft, #fef1d0);
+  color: #002e77;
+  border: 1px solid var(--soft, #fef1d0);
+  font-family: var(--medium), system-ui, sans-serif;
+}
+.cl-hero-cta__primary:hover {
+  transform: translateY(-2px);
+  background: #fff;
+  border-color: #fff;
+}
+
+.cl-hero-cta__secondary {
+  background: transparent;
+  color: var(--soft, #fef1d0);
+  border: 1px solid color-mix(in srgb, var(--soft, #fef1d0) 55%, transparent);
+}
+.cl-hero-cta__secondary:hover {
+  transform: translateY(-2px);
+  border-color: var(--soft, #fef1d0);
+  background: color-mix(in srgb, var(--soft, #fef1d0) 12%, transparent);
+}
+
+.cl-hero-cta__primary:focus-visible,
+.cl-hero-cta__secondary:focus-visible {
+  outline: 2px solid var(--soft, #fef1d0);
+  outline-offset: 3px;
+}
+
+/* The hero is centred and vertically tight on short screens; the CTA gives up
+   its top margin first rather than pushing the scroll cue off-screen. */
+@media (max-height: 760px) {
+  .cl-hero-cta { margin-top: 1.8rem; }
+}
+
+@media (max-width: 600px) {
+  .cl-hero-cta { gap: 10px; width: 100%; }
+  .cl-hero-cta__primary,
+  .cl-hero-cta__secondary {
+    flex: 1 1 auto;
+    padding: 0.9em 1.4em;
+    font-size: 0.95rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cl-hero-cta__primary,
+  .cl-hero-cta__secondary { transition: none; }
+  .cl-hero-cta__primary:hover,
+  .cl-hero-cta__secondary:hover { transform: none; }
+}
+
+/* --- Chainlink mark inside the stats ring ---------------------------------
+   The label this replaces was dragged into the ring by two negative offsets
+   tuned to a single line of 1.9rem text (margin-top -4.5rem on the wrapper,
+   top -5.3rem on the paragraph). A block with different dimensions inherits
+   that maths and lands nowhere near the centre — which is exactly what
+   happened: the mark rendered roughly 10rem below the ring.
+
+   .stats__stats is the ring container and is already position:relative, so the
+   wrapper is centred against it directly and the mark's own height stops
+   mattering. */
+.stats__stats__minimum {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.cl-stats-mark {
+  display: block;
+  width: clamp(110px, 15vw, 250px);
+  height: auto;
+}
+
+/* --- retired audio affordances --------------------------------------------
+   The background loop and the six narration clips are gone, and no element is
+   registered as an insight trigger any more, so the sound toggle and the
+   "Play insight" cursor have nothing left to control.
+
+   Hidden rather than deleted: the engine holds both by querySelector and calls
+   into them, so the nodes have to stay in the DOM. display:none also takes
+   them out of the accessibility tree, so they are not announced either. */
+.trg-sound,
+.cursor-insight,
+/* The floating "THE NOTE" trigger. It opened the template author's personal
+   letter; the panel itself stays in the DOM because the engine binds to it,
+   but nothing reaches it any more. */
+.trg-note {
+  display: none !important;
+}
+
+/* The rotating duration picker that used to sit under "Minimum duration:".
+   With the Chainlink mark in the centre the two overlap, and the ring only
+   needs to say one thing.
+
+   Hidden rather than removed: the engine holds .stats__stats__ul and
+   .stats__stats__number by query and animates them, so the nodes must stay.
+   The ring keeps its size from .stats_stats__pattern, which carries its own
+   width and aspect-ratio, so nothing collapses. */
+.stats__stats__ul {
+  display: none;
+}
+
+
+/* ============================================================================
+   Retired scenes
+   ----------------------------------------------------------------------------
+   display:none rather than removing the node: the engine reads
+   querySelector(".scene-tunnel").previousElementSibling, and a null there
+   throws and takes the whole 3D runtime with it. Hiding also collapses the
+   spacer's scroll height, so the section no longer occupies the page.
+   ========================================================================== */
+.scene-tunnel,
+.scene-woman,
+/* Everything between the pendulum and the closing CTA. The page now runs
+   hero -> the four argument sections -> pendulum -> build -> footer.
+
+   Hidden, never removed: the engine holds most of these by querySelector and
+   dereferences the result immediately (.the-balance, .cycle__wrapper,
+   .solution__hero, .drop-cans__svg, .typog__words), so a null throws and takes
+   the whole 3D runtime with it. Hiding also drops their scroll height, so they
+   no longer lengthen the page. */
+.drop-cans,
+.scene-phone-before,
+.scene-phone,
+.the-balance,
+.scene-lamp,
+.cycle,
+.solution,
+/* The closing block and the footer. Both were still the template's: a sign-off
+   telling you to go and sleep, a link to the author's animation course, his
+   socials, and the challenge credit. None of it belongs to this product.
+
+   The page now simply ends on the pendulum. */
+.ender,
+.footer,
+.footer-decor-solid {
+  display: none;
+}
+
+/* ============================================================================
+   Body copy scale
+   ----------------------------------------------------------------------------
+   The template set these in fixed rem against its own longer paragraphs. With
+   the copy cut back there is room to read them at a size that matches the
+   display type around them, instead of a dense block in a narrow column.
+   ========================================================================== */
+.parag {
+  font-size: clamp(1.9rem, 1.55vw, 3.1rem);
+  line-height: 1.45;
+}
+
+.small-parag {
+  font-size: clamp(1.8rem, 1.45vw, 2.9rem);
+  line-height: 1.45;
+}
+
+/* ============================================================================
+   Ledger mark at the centre of the clock
+   ----------------------------------------------------------------------------
+   The slot was a 5.2rem circle with a border and overflow:hidden, built to clip
+   a round texture. A wordmark is 3:1, so the circle has to be undone entirely —
+   clipping it to a disc would crop the word.
+   ========================================================================== */
+.onclock__spiral__center.cl-ledger-center {
+  width: clamp(150px, 20vw, 330px);
+  aspect-ratio: auto;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+  display: grid;
+  place-items: center;
+  /* The ring's radiating lines converge here, so the mark needs to sit above
+     them rather than be threaded through. */
+  z-index: 3;
+}
+
+.cl-ledger {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 0 26px rgba(8, 18, 74, 0.55));
+}
+
+/* ============================================================================
+   Marks inside the pendulum balls
+   ----------------------------------------------------------------------------
+   The balls are bordered discs with their texture sized to fill edge to edge.
+   A logo cannot fill a circle the same way — square it off and it gets clipped
+   at the curve — so each mark is inset and centred instead.
+
+   The wrappers keep their classes untouched: the engine collects
+   .pendulum__ball__img with querySelectorAll and animates opacity on them, so
+   the swing and fade are unchanged.
+   ========================================================================== */
+.pendulum__ball__img {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.cl-pend-mark {
+  display: block;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Sized per mark: the Chainlink hexagon is near-square, Ledger is a 3:1
+   wordmark, and ENS sits between the two. Each gets the width that leaves a
+   comfortable margin inside the disc rather than one shared value. */
+.cl-pend-mark--chain  { width: 46%; }
+.cl-pend-mark--ens    { width: 58%; }
+.cl-pend-mark--ledger { width: 66%; }
+
+/* All three pendulum balls take the white ground the middle one had, so the
+   marks sit on a consistent disc rather than one floating on the page colour. */
+.pendulum__ball__img {
+  background-color: var(--white);
+}

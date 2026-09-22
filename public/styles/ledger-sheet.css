@@ -1,0 +1,219 @@
+/* ============================================================================
+   Ledger signing sheet
+   ----------------------------------------------------------------------------
+   Kept in its own stylesheet rather than folded into studio.css: the sheet is
+   an optional surface, and the workbench should not pay for it on every page.
+
+   One easing curve throughout. The sheet rising, the card resizing and the
+   panels crossfading are one object changing its mind — three different curves
+   would read as three animations happening at once.
+   ========================================================================== */
+.cl-ledger-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  background: rgba(6, 10, 20, 0.52);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.34s linear;
+}
+.cl-ledger-backdrop[data-open='true'] { opacity: 1; pointer-events: auto; }
+
+.cl-ledger-sheet {
+  --cl-ledger-ease: cubic-bezier(0.22, 0.9, 0.24, 1);
+  position: relative;
+  width: min(408px, 100%);
+  border-radius: 28px;
+  background: var(--cl-panel, #fffdf6);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  transform: translateY(120%) scale(0.96);
+  opacity: 0;
+  transition: transform 0.66s var(--cl-ledger-ease), opacity 0.34s linear;
+}
+.cl-ledger-sheet[data-open='true'] { transform: none; opacity: 1; }
+
+.cl-ledger-viewport {
+  position: relative;
+  /* A floor, so the very first paint is a card rather than a sliver while the
+     animation is still being fetched. */
+  min-height: 340px;
+  transition: height 0.52s var(--cl-ledger-ease);
+}
+
+.cl-ledger-panel {
+  position: absolute;
+  /* top/left/right only, never bottom: with `inset: 0` the panel's height is
+     the viewport's height, so measuring scrollHeight returned the value we were
+     about to set from it. Height has to come from the content. */
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 26px 24px 24px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(16px) scale(0.975);
+  transition: opacity 0.28s linear, transform 0.52s var(--cl-ledger-ease);
+  pointer-events: none;
+}
+.cl-ledger-panel[data-active='true'] { opacity: 1; transform: none; pointer-events: auto; }
+
+/* --- device stage --- */
+.cl-ledger-art {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 2px 0 4px;
+  display: grid;
+  place-items: center;
+  color: var(--cl-pass, #137a4a);
+}
+.cl-ledger-art > div { width: 100%; height: 100%; }
+/* lottie writes its own width/height onto the <svg> it injects. Left alone it
+   lays the composition out at its natural 960x960, which overflows the stage
+   and pushes the title and buttons out of the card's clipped area. */
+.cl-ledger-art svg {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+/* A soft plinth, so the device is standing on something rather than floating. */
+.cl-ledger-art::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  translate: -50% 0;
+  width: 112px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(12, 20, 36, 0.16), transparent);
+}
+
+.cl-ledger-title {
+  margin: 0 0 6px;
+  font-family: var(--medium, inherit);
+  font-size: 20px;
+  letter-spacing: -0.2px;
+  color: var(--cl-ink-heading, #0c1424);
+}
+.cl-ledger-sub {
+  margin: 0;
+  max-width: 31ch;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--cl-ink-3, #5a6b93);
+}
+
+.cl-ledger-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 2;
+  width: 27px;
+  height: 27px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  font-size: 13px;
+  cursor: pointer;
+  color: var(--cl-ink-3, #5a6b93);
+  background: rgba(12, 20, 36, 0.07);
+  opacity: 0;
+  transition: opacity 0.3s linear 0.2s, background 0.15s linear;
+}
+.cl-ledger-close:hover { background: rgba(12, 20, 36, 0.13); }
+.cl-ledger-sheet[data-open='true'] .cl-ledger-close { opacity: 1; }
+
+.cl-ledger-cta {
+  width: 100%;
+  margin-top: 16px;
+  padding: 13px;
+  border: 0;
+  border-radius: 14px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  color: var(--cl-canvas, #fef1d0);
+  background: var(--cl-ink, #0042af);
+  transition: background 0.18s linear, transform 0.18s var(--cl-ledger-ease);
+}
+.cl-ledger-cta:hover { background: #002e77; transform: translateY(-1px); }
+.cl-ledger-cta.ghost { background: rgba(12, 20, 36, 0.06); color: var(--cl-ink-heading, #0c1424); }
+.cl-ledger-cta.ghost:hover { background: rgba(12, 20, 36, 0.1); }
+.cl-ledger-row { display: flex; gap: 9px; width: 100%; margin-top: 16px; }
+.cl-ledger-row .cl-ledger-cta { flex: 1; margin-top: 0; }
+
+/* --- what is being signed --- */
+.cl-ledger-tx {
+  width: 100%;
+  margin: 14px 0 0;
+  border: 1px solid var(--cl-line, #e6dcc2);
+  border-radius: 14px;
+  background: var(--cl-canvas, #fdf8ea);
+  overflow: hidden;
+  text-align: left;
+}
+.cl-ledger-tx-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 13px;
+  font-size: 12.5px;
+}
+.cl-ledger-tx-row + .cl-ledger-tx-row { border-top: 1px solid var(--cl-line, #e6dcc2); }
+.cl-ledger-tx-row dt { color: var(--cl-ink-3, #5a6b93); margin: 0; }
+.cl-ledger-tx-row dd {
+  margin: 0;
+  text-align: right;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.cl-ledger-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-family: var(--medium, inherit);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+.cl-ledger-chip[data-tone='ok'] { background: var(--cl-pass-bg, #e6f4ec); color: var(--cl-pass, #137a4a); }
+.cl-ledger-chip[data-tone='deny'] { background: var(--cl-deny-bg, #fbe9e9); color: var(--cl-deny, #a3232b); }
+
+.cl-ledger-pips { display: flex; gap: 6px; margin-top: 16px; }
+.cl-ledger-pip {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(12, 20, 36, 0.15);
+  transition: background 0.4s var(--cl-ledger-ease), width 0.4s var(--cl-ledger-ease);
+}
+.cl-ledger-pip[data-on='true'] { width: 20px; background: var(--cl-ink, #0042af); }
+
+/* --- signed --- */
+.cl-ledger-tick { width: 64px; height: 64px; }
+.cl-ledger-tick circle { stroke-dasharray: 170; stroke-dashoffset: 170; }
+.cl-ledger-tick path { stroke-dasharray: 40; stroke-dashoffset: 40; }
+.cl-ledger-panel[data-active='true'] .cl-ledger-tick circle { animation: cl-ledger-draw 0.55s var(--cl-ledger-ease) forwards; }
+.cl-ledger-panel[data-active='true'] .cl-ledger-tick path { animation: cl-ledger-draw 0.4s var(--cl-ledger-ease) 0.35s forwards; }
+@keyframes cl-ledger-draw { to { stroke-dashoffset: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .cl-ledger-backdrop,
+  .cl-ledger-sheet,
+  .cl-ledger-viewport,
+  .cl-ledger-panel,
+  .cl-ledger-cta { transition: none; }
+  .cl-ledger-tick circle,
+  .cl-ledger-tick path { animation: none; stroke-dashoffset: 0; }
+}
