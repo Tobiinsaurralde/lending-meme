@@ -1,0 +1,28 @@
+name: keeper
+
+# GitHub caps a job at 6 hours, so each run watches for just under that and the
+# next scheduled run waits in the concurrency queue to take over.
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: keeper
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 358
+    steps:
+      - name: Check loans every 15 seconds
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          end=$((SECONDS + 350 * 60))
+          while [ "$SECONDS" -lt "$end" ]; do
+            curl -s -m 70 -H "Authorization: Bearer $CRON_SECRET" https://bagfi.fun/cron/keeper | head -c 400
+            echo
+            sleep 15
+          done
