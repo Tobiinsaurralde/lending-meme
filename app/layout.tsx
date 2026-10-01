@@ -1,9 +1,13 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'ContextLock — Give AI authority, not keys',
+  title: 'BagFi — Borrow USDC on Arc',
   description:
-    'Design, prove, deploy and operate secure financial agents. Authority is bounded by a deterministic policy layer, not by a prompt.',
+    'BagFi is a fixed-term lending protocol on Arc. Borrow USDC against a memecoin. Flat fee, and the bag stays in the vault.',
+  icons: {
+    icon: [{ url: '/favicon.ico?v=5' }, { url: '/icon.png?v=5', type: 'image/png' }],
+    apple: [{ url: '/apple-icon.png?v=5' }],
+  },
 };
 
 export default function RootLayout({
@@ -32,7 +36,21 @@ export default function RootLayout({
         {/* ContextLock's own additions load last so they win on equal
             specificity without !important. Kept separate from the scraped
             Webflow sheets above. */}
-        <link rel="stylesheet" href="/styles/landing.css" precedence="high" />
+        <link rel="stylesheet" href="/styles/landing.css?v=7" precedence="high" />
+        <style>{`
+          :root, body {
+            --soft: #d5e0e7;
+            --color: #1b3158;
+            --color-medium: #2f578c;
+            --dark-blue: #12192b;
+            --color-soft: #acc6e9;
+          }
+          .section-blue,
+          section.onclock.section-blue,
+          section.importance.section-blue {
+            background: #12192b;
+          }
+        `}</style>
         {children}
       </body>
     </html>

@@ -2047,32 +2047,24 @@ textarea.w-input, textarea.w-select {
 }
 
 @font-face {
-  font-family: NM_Light;
-  src: url(/fonts/68fcf9490b2a28caaa0e59d2_nm-light.woff2) format("woff2");
-  font-weight: 300;
+  font-family: "Space Grotesk";
+  src: url(/fonts/space-grotesk-light.woff2) format("woff2");
+  font-weight: 300 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: NM_Medium;
-  src: url(/fonts/68fcf9490b2a28caaa0e59d3_nm-medium.woff2) format("woff2");
-  font-weight: 500;
+  font-family: "DM Sans";
+  src: url(/fonts/dm-sans-variable.woff2) format("woff2");
+  font-weight: 100 1000;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: Editorial;
-  src: url(/fonts/68fcf9490b2a28caaa0e59d4_editorial-regular.woff2) format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: NM_Regular;
-  src: url(/fonts/68fcf9490b2a28caaa0e59d1_nm-regularar.woff) format("woff");
+  font-family: "Space Mono";
+  src: url(/fonts/space-mono-regular.woff2) format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -2086,11 +2078,12 @@ textarea.w-input, textarea.w-select {
   --color-soft: #4589f7;
   --gap: 13rem;
   --white: white;
-  --sans: "NM_Regular", Arial, sans-serif;
-  --medium: "NM_Medium", Arial, sans-serif;
+  --sans: "DM Sans", Arial, sans-serif;
+  --medium: "DM Sans", Arial, sans-serif;
   --black: #010101;
-  --light: "NM_Light", Arial, sans-serif;
-  --serif: Editorial, Georgia, sans-serif;
+  --light: "DM Sans", Arial, sans-serif;
+  --serif: "Space Grotesk", Arial, sans-serif;
+  --mono: "Space Mono", monospace;
   --gap-section: 30rem;
 }
 
@@ -2135,16 +2128,19 @@ body {
 }
 
 .subtitle__text.subtitle__text__vwlab, .subtitle__text.subtitle__text__victor {
-  font-family: NM_Medium, Arial, sans-serif;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-weight: 500;
 }
 
 .subtitle__text.lined.trg-note__text {
   color: var(--color-medium);
-  font-family: NM_Medium, Arial, sans-serif;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-weight: 500;
 }
 
 .subtitle__text.note__credit {
-  font-family: NM_Medium, Arial, sans-serif;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-weight: 500;
   font-size: 1.6rem;
 }
 
@@ -2159,7 +2155,8 @@ body {
 
 .description {
   letter-spacing: -.1rem;
-  font-family: Editorial, Georgia, sans-serif;
+  font-family: "Space Grotesk", Arial, sans-serif;
+  font-weight: 300;
   font-size: 4rem;
   line-height: 130%;
 }
@@ -2209,7 +2206,8 @@ body {
 
 .title_serif {
   letter-spacing: -.2rem;
-  font-family: Editorial, Georgia, sans-serif;
+  font-family: "Space Grotesk", Arial, sans-serif;
+  font-weight: 300;
   font-size: 8.72rem;
   line-height: 130%;
 }
@@ -2232,7 +2230,8 @@ body {
 
 .title_sans {
   letter-spacing: 0;
-  font-family: NM_Regular, Arial, sans-serif;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-weight: 400;
   font-size: 8.72rem;
   line-height: 130%;
 }
@@ -2310,7 +2309,8 @@ body {
 
 .stats__stats__number {
   letter-spacing: -.2rem;
-  font-family: Editorial, Georgia, sans-serif;
+  font-family: "Space Grotesk", Arial, sans-serif;
+  font-weight: 300;
   font-size: 10.5rem;
   line-height: 90%;
 }
@@ -2348,7 +2348,8 @@ body {
 
 .section-index__index {
   letter-spacing: -.1rem;
-  font-family: Editorial, Georgia, sans-serif;
+  font-family: "Space Grotesk", Arial, sans-serif;
+  font-weight: 300;
   font-size: 2.5rem;
   line-height: 130%;
   position: absolute;
@@ -2920,7 +2921,8 @@ body {
   background-color: var(--color);
   border-radius: 50px;
   padding: 1.5rem 3rem;
-  font-family: NM_Medium, Arial, sans-serif;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-weight: 500;
   font-size: 1.6rem;
   position: absolute;
   inset: auto auto 6rem 6rem;
@@ -3469,7 +3471,8 @@ body {
 
 .footer__cta__link__span {
   letter-spacing: 0;
-  font-family: NM_Medium, Arial, sans-serif;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-weight: 500;
   font-size: 1.4rem;
 }
 
@@ -3506,7 +3509,8 @@ body {
 }
 
 .text-span {
-  font-family: NM_Medium, Arial, sans-serif;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-weight: 500;
 }
 
 .scene-phone__description {
@@ -3579,7 +3583,8 @@ body {
   justify-content: center;
   align-items: center;
   padding: 1.3rem 2.9rem;
-  font-family: Editorial, Georgia, sans-serif;
+  font-family: "Space Grotesk", Arial, sans-serif;
+  font-weight: 300;
   font-size: 2rem;
   display: flex;
   position: absolute;
@@ -3587,7 +3592,8 @@ body {
 }
 
 .note__close__text {
-  font-family: Editorial, Georgia, sans-serif;
+  font-family: "Space Grotesk", Arial, sans-serif;
+  font-weight: 300;
   line-height: 50%;
 }
 
@@ -3849,11 +3855,13 @@ body {
 }
 
 .note__parag__bold {
-  font-family: NM_Medium, Arial, sans-serif;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-weight: 500;
 }
 
 .note__parag__serif {
-  font-family: Editorial, Georgia, sans-serif;
+  font-family: "Space Grotesk", Arial, sans-serif;
+  font-weight: 300;
   font-size: 2.4rem;
 }
 
@@ -3940,7 +3948,8 @@ body {
 
 .preloader__span {
   letter-spacing: -.1rem;
-  font-family: Editorial, Georgia, sans-serif;
+  font-family: "Space Grotesk", Arial, sans-serif;
+  font-weight: 300;
   font-size: 25px;
   line-height: 130%;
 }
@@ -4037,7 +4046,8 @@ body {
   letter-spacing: 3rem;
   margin-top: 0;
   margin-bottom: 0;
-  font-family: Editorial, Georgia, sans-serif;
+  font-family: "Space Grotesk", Arial, sans-serif;
+  font-weight: 300;
   font-size: 5.1rem;
   font-weight: 400;
   line-height: 130%;
@@ -4071,16 +4081,19 @@ body {
 }
 
 .hero__scroll__text.subtitle__text__vwlab, .hero__scroll__text.subtitle__text__victor {
-  font-family: NM_Medium, Arial, sans-serif;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-weight: 500;
 }
 
 .hero__scroll__text.lined.trg-note__text {
   color: #2451b5;
-  font-family: NM_Medium, Arial, sans-serif;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-weight: 500;
 }
 
 .hero__scroll__text.note__credit {
-  font-family: NM_Medium, Arial, sans-serif;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-weight: 500;
   font-size: 1.6rem;
 }
 
@@ -4116,16 +4129,19 @@ body {
 }
 
 .hero__subt__text.subtitle__text__vwlab, .hero__subt__text.subtitle__text__victor {
-  font-family: NM_Medium, Arial, sans-serif;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-weight: 500;
 }
 
 .hero__subt__text.lined.trg-note__text {
   color: #2451b5;
-  font-family: NM_Medium, Arial, sans-serif;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-weight: 500;
 }
 
 .hero__subt__text.note__credit {
-  font-family: NM_Medium, Arial, sans-serif;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-weight: 500;
   font-size: 1.6rem;
 }
 
@@ -4168,7 +4184,8 @@ body {
 
 .typog__word__text {
   letter-spacing: -.3rem;
-  font-family: Editorial, Georgia, sans-serif;
+  font-family: "Space Grotesk", Arial, sans-serif;
+  font-weight: 300;
   font-size: 13.5rem;
   line-height: 130%;
   display: flex;
@@ -4302,7 +4319,8 @@ body {
   opacity: 0;
   letter-spacing: -.5px;
   word-spacing: -.2rem;
-  font-family: Editorial, Georgia, sans-serif;
+  font-family: "Space Grotesk", Arial, sans-serif;
+  font-weight: 300;
   font-size: 1.7rem;
   position: relative;
 }
@@ -4381,7 +4399,8 @@ body {
   color: var(--white);
   letter-spacing: -.1rem;
   padding-left: .7rem;
-  font-family: Editorial, Georgia, sans-serif;
+  font-family: "Space Grotesk", Arial, sans-serif;
+  font-weight: 300;
   font-size: 3.1rem;
   line-height: 130%;
   position: relative;
@@ -4390,7 +4409,8 @@ body {
 .insights__counter__static {
   color: var(--color-soft);
   letter-spacing: -.1rem;
-  font-family: Editorial, Georgia, sans-serif;
+  font-family: "Space Grotesk", Arial, sans-serif;
+  font-weight: 300;
   font-size: 1.4rem;
   line-height: 130%;
   position: relative;
@@ -4405,7 +4425,8 @@ body {
   color: var(--white);
   text-align: center;
   letter-spacing: -.2rem;
-  font-family: Editorial, Georgia, sans-serif;
+  font-family: "Space Grotesk", Arial, sans-serif;
+  font-weight: 300;
   font-size: 9rem;
   line-height: 100%;
   position: relative;
@@ -4483,16 +4504,19 @@ body {
 }
 
 .insights__text.subtitle__text__vwlab, .insights__text.subtitle__text__victor {
-  font-family: NM_Medium, Arial, sans-serif;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-weight: 500;
 }
 
 .insights__text.lined.trg-note__text {
   color: #2451b5;
-  font-family: NM_Medium, Arial, sans-serif;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-weight: 500;
 }
 
 .insights__text.note__credit {
-  font-family: NM_Medium, Arial, sans-serif;
+  font-family: "DM Sans", Arial, sans-serif;
+  font-weight: 500;
   font-size: 1.6rem;
 }
 
@@ -4540,7 +4564,8 @@ body {
   opacity: 0;
   letter-spacing: -.1rem;
   white-space: nowrap;
-  font-family: Editorial, Georgia, sans-serif;
+  font-family: "Space Grotesk", Arial, sans-serif;
+  font-weight: 300;
   font-size: 25px;
   line-height: 130%;
   position: absolute;
@@ -4560,11 +4585,12 @@ body {
     --color-soft: #4589f7;
     --gap: 7rem;
     --white: white;
-    --sans: "NM_Regular", Arial, sans-serif;
-    --medium: "NM_Medium", Arial, sans-serif;
+    --sans: "DM Sans", Arial, sans-serif;
+    --medium: "DM Sans", Arial, sans-serif;
     --black: #010101;
-    --light: "NM_Light", Arial, sans-serif;
-    --serif: Editorial, Georgia, sans-serif;
+    --light: "DM Sans", Arial, sans-serif;
+    --serif: "Space Grotesk", Arial, sans-serif;
+  --mono: "Space Mono", monospace;
     --gap-section: 15rem;
   }
 
@@ -4688,11 +4714,12 @@ body {
     --color-soft: #4589f7;
     --gap: 7rem;
     --white: white;
-    --sans: "NM_Regular", Arial, sans-serif;
-    --medium: "NM_Medium", Arial, sans-serif;
+    --sans: "DM Sans", Arial, sans-serif;
+    --medium: "DM Sans", Arial, sans-serif;
     --black: #010101;
-    --light: "NM_Light", Arial, sans-serif;
-    --serif: Editorial, Georgia, sans-serif;
+    --light: "DM Sans", Arial, sans-serif;
+    --serif: "Space Grotesk", Arial, sans-serif;
+  --mono: "Space Mono", monospace;
     --gap-section: 15rem;
   }
 
@@ -4972,11 +4999,12 @@ body {
     --color-soft: #4589f7;
     --gap: 4rem;
     --white: white;
-    --sans: "NM_Regular", Arial, sans-serif;
-    --medium: "NM_Medium", Arial, sans-serif;
+    --sans: "DM Sans", Arial, sans-serif;
+    --medium: "DM Sans", Arial, sans-serif;
     --black: #010101;
-    --light: "NM_Light", Arial, sans-serif;
-    --serif: Editorial, Georgia, sans-serif;
+    --light: "DM Sans", Arial, sans-serif;
+    --serif: "Space Grotesk", Arial, sans-serif;
+  --mono: "Space Mono", monospace;
     --gap-section: 7rem;
   }
 
@@ -5003,11 +5031,12 @@ body {
     --color-soft: #4589f7;
     --gap: 4rem;
     --white: white;
-    --sans: "NM_Regular", Arial, sans-serif;
-    --medium: "NM_Medium", Arial, sans-serif;
+    --sans: "DM Sans", Arial, sans-serif;
+    --medium: "DM Sans", Arial, sans-serif;
     --black: #010101;
-    --light: "NM_Light", Arial, sans-serif;
-    --serif: Editorial, Georgia, sans-serif;
+    --light: "DM Sans", Arial, sans-serif;
+    --serif: "Space Grotesk", Arial, sans-serif;
+  --mono: "Space Mono", monospace;
     --gap-section: 7rem;
   }
 
@@ -5060,11 +5089,12 @@ body {
     --color-soft: #4589f7;
     --gap: 4rem;
     --white: white;
-    --sans: "NM_Regular", Arial, sans-serif;
-    --medium: "NM_Medium", Arial, sans-serif;
+    --sans: "DM Sans", Arial, sans-serif;
+    --medium: "DM Sans", Arial, sans-serif;
     --black: #010101;
-    --light: "NM_Light", Arial, sans-serif;
-    --serif: Editorial, Georgia, sans-serif;
+    --light: "DM Sans", Arial, sans-serif;
+    --serif: "Space Grotesk", Arial, sans-serif;
+  --mono: "Space Mono", monospace;
     --gap-section: 7rem;
   }
 
@@ -5100,11 +5130,12 @@ body {
     --color-soft: #4589f7;
     --gap: 4rem;
     --white: white;
-    --sans: "NM_Regular", Arial, sans-serif;
-    --medium: "NM_Medium", Arial, sans-serif;
+    --sans: "DM Sans", Arial, sans-serif;
+    --medium: "DM Sans", Arial, sans-serif;
     --black: #010101;
-    --light: "NM_Light", Arial, sans-serif;
-    --serif: Editorial, Georgia, sans-serif;
+    --light: "DM Sans", Arial, sans-serif;
+    --serif: "Space Grotesk", Arial, sans-serif;
+  --mono: "Space Mono", monospace;
     --gap-section: 7rem;
   }
 
@@ -5147,11 +5178,12 @@ body {
     --color-soft: #4589f7;
     --gap: 4rem;
     --white: white;
-    --sans: "NM_Regular", Arial, sans-serif;
-    --medium: "NM_Medium", Arial, sans-serif;
+    --sans: "DM Sans", Arial, sans-serif;
+    --medium: "DM Sans", Arial, sans-serif;
     --black: #010101;
-    --light: "NM_Light", Arial, sans-serif;
-    --serif: Editorial, Georgia, sans-serif;
+    --light: "DM Sans", Arial, sans-serif;
+    --serif: "Space Grotesk", Arial, sans-serif;
+  --mono: "Space Mono", monospace;
     --gap-section: 15rem;
   }
 
@@ -5244,11 +5276,12 @@ body {
     --color-soft: #4589f7;
     --gap: 4rem;
     --white: white;
-    --sans: "NM_Regular", Arial, sans-serif;
-    --medium: "NM_Medium", Arial, sans-serif;
+    --sans: "DM Sans", Arial, sans-serif;
+    --medium: "DM Sans", Arial, sans-serif;
     --black: #010101;
-    --light: "NM_Light", Arial, sans-serif;
-    --serif: Editorial, Georgia, sans-serif;
+    --light: "DM Sans", Arial, sans-serif;
+    --serif: "Space Grotesk", Arial, sans-serif;
+  --mono: "Space Mono", monospace;
     --gap-section: 15rem;
     width: 160%;
   }

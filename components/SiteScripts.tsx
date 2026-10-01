@@ -54,19 +54,90 @@ function neutraliseSilencedAudio() {
   });
 }
 
+const PHONE = '(max-width: 1024px)';
+
+/** Pinch-zoom lock for the landing on a phone. Desktop keeps the normal viewport. */
+function lockPhoneZoom() {
+  if (!window.matchMedia(PHONE).matches) return () => {};
+  const meta = document.querySelector('meta[name="viewport"]');
+  const previous = meta?.getAttribute('content') ?? null;
+  meta?.setAttribute(
+    'content',
+    'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover',
+  );
+  const blockGesture = (event: Event) => event.preventDefault();
+  const blockPinch = (event: TouchEvent) => {
+    if (event.touches.length > 1) event.preventDefault();
+  };
+  document.addEventListener('gesturestart', blockGesture);
+  document.addEventListener('gesturechange', blockGesture);
+  document.addEventListener('touchmove', blockPinch, { passive: false });
+  return () => {
+    if (meta && previous !== null) meta.setAttribute('content', previous);
+    document.removeEventListener('gesturestart', blockGesture);
+    document.removeEventListener('gesturechange', blockGesture);
+    document.removeEventListener('touchmove', blockPinch);
+  };
+}
+
+/**
+ * After Enter Site, the phone must show the hero. iOS keeps the scroll
+ * position of whatever sat under the tap once the overlay is removed, which
+ * lands on the introduction paragraph. Hold the top until that overlay is gone.
+ */
+function pinTopUntilEntered() {
+  if (!window.matchMedia(PHONE).matches) return () => {};
+  const toTop = () => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  };
+  toTop();
+  let pinning = true;
+  const onScroll = () => {
+    if (pinning && window.scrollY > 0) toTop();
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  const preloader = document.querySelector('.preloader');
+  const onEnter = () => {
+    toTop();
+    const startedAt = performance.now();
+    const id = window.setInterval(() => {
+      toTop();
+      if (performance.now() - startedAt > 1500) {
+        window.clearInterval(id);
+        pinning = false;
+        toTop();
+      }
+    }, 50);
+  };
+  preloader?.addEventListener('click', onEnter, true);
+  return () => {
+    pinning = false;
+    window.removeEventListener('scroll', onScroll);
+    preloader?.removeEventListener('click', onEnter, true);
+  };
+}
+
 export default function SiteScripts() {
   useEffect(() => {
-    if (started) return;
-    started = true;
-
-    (async () => {
-      // Before the engine boots, so its first play() call already sees the stub.
-      neutraliseSilencedAudio();
-      for (const src of CLASSIC) await loadScript(src);
-      // ES module: its relative imports/model URLs resolve from /assets & /models
-      await loadScript('/assets/app.module.js', 'module');
-      await loadScript('/vendor/inline.js');
-    })().catch((e) => console.error('[contextlock] script boot failed', e));
+    const unlockZoom = lockPhoneZoom();
+    const unpin = pinTopUntilEntered();
+    if (!started) {
+      started = true;
+      (async () => {
+        // Before the engine boots, so its first play() call already sees the stub.
+        neutraliseSilencedAudio();
+        for (const src of CLASSIC) await loadScript(src);
+        // ES module: its relative imports/model URLs resolve from /assets & /models
+        await loadScript('/assets/app.module.js?v=2', 'module');
+        await loadScript('/vendor/inline.js');
+      })().catch((e) => console.error('[contextlock] script boot failed', e));
+    }
+    return () => {
+      unlockZoom();
+      unpin();
+    };
   }, []);
 
   return null;

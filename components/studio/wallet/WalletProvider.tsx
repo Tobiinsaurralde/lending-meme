@@ -3,25 +3,52 @@
 /**
  * Wallet runtime gate.
  *
- * Renders children untouched until the session is activated, then mounts the
- * wagmi + RainbowKit runtime around them. Because the runtime arrives through
- * next/dynamic it lives in its own chunk: a route that never connects a wallet
- * never downloads those ~7,000 modules, while a connected visitor gets the
- * wallet everywhere in the app rather than only on Deploy.
+ * Renders children untouched until the session is booting, then mounts the
+ * wagmi + RainbowKit runtime around them. The runtime chunk loads behind the
+ * page that is already on screen. `activated` flips only after that runtime
+ * is wrapped around the same children, so nothing calls wagmi too early and
+ * the desk never drops out to the empty body colour.
  */
 import dynamic from 'next/dynamic';
-import type { ReactNode } from 'react';
+import { useLayoutEffect, type ReactNode } from 'react';
 import { useWalletSession } from '@/lib/studio/wallet-session';
 
-const WalletRuntime = dynamic(() => import('./WalletRuntime').then((m) => m.WalletRuntime), {
-  ssr: false,
-  // The workspace stays usable while the wallet chunk loads.
-  loading: () => null,
-});
+const shown = { current: null as ReactNode };
+
+function KeepPage() {
+  return <>{shown.current}</>;
+}
+
+function Activate({ children }: { children: ReactNode }) {
+  const { markReady } = useWalletSession();
+  useLayoutEffect(() => {
+    markReady();
+  }, [markReady]);
+  return children;
+}
+
+const WalletRuntime = dynamic(
+  () =>
+    import('./WalletRuntime').then((mod) => {
+      function Loaded({ children }: { children: ReactNode }) {
+        const Runtime = mod.WalletRuntime;
+        return (
+          <Activate>
+            <Runtime>{children}</Runtime>
+          </Activate>
+        );
+      }
+      return Loaded;
+    }),
+  {
+    ssr: false,
+    loading: KeepPage,
+  },
+);
 
 export function WalletProvider({ children }: { children: ReactNode }) {
-  const { activated } = useWalletSession();
-
-  if (!activated) return <>{children}</>;
+  const { booting } = useWalletSession();
+  shown.current = children;
+  if (!booting) return <>{children}</>;
   return <WalletRuntime>{children}</WalletRuntime>;
 }

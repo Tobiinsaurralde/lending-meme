@@ -30,6 +30,8 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "ganache": "^7.9.2",
+    "solc": "^0.8.24",
     "typescript": "^5"
   }
 }

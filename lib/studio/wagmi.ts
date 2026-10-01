@@ -13,6 +13,7 @@ import { getDefaultConfig, getDefaultWallets } from '@rainbow-me/rainbowkit';
 import { ledgerWallet } from '@rainbow-me/rainbowkit/wallets';
 import { baseSepolia, mainnet, sepolia } from 'wagmi/chains';
 import { http } from 'wagmi';
+import { arc, arcTestnet } from '@/lib/market/arc';
 
 export const WALLETCONNECT_PROJECT_ID = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? '';
 
@@ -36,12 +37,14 @@ const wallets = [
 ];
 
 export const wagmiConfig = getDefaultConfig({
-  appName: 'ContextLock Studio',
+  appName: 'BagFi',
   // RainbowKit requires a non-empty id; the guard above is what the UI reports on.
   projectId: WALLETCONNECT_PROJECT_ID || 'contextlock-studio-local',
   wallets,
-  chains: [sepolia, baseSepolia, mainnet],
+  chains: [arc, arcTestnet, sepolia, baseSepolia, mainnet],
   transports: {
+    [arc.id]: http(arc.rpcUrls.default.http[0]),
+    [arcTestnet.id]: http(arcTestnet.rpcUrls.default.http[0]),
     [sepolia.id]: http(),
     [baseSepolia.id]: http(),
     // Mainnet is registered for read-only market data only.

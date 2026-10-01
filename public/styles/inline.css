@@ -23,7 +23,9 @@ body {
 	box-sizing: border-box;
 	color: var(--color);
   -webkit-font-smoothing: antialiased;
-	font-weight: 100;
+	/* Was 100. The template's faces had a single weight each, so this never
+	   rendered; DM Sans is variable and honours it as hairline. */
+	font-weight: 400;
 }
 
 button {

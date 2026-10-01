@@ -1,3 +1,52 @@
+/* Arc's own tokens: protocol navy, validator blue, static ether, sky sync.
+   The ground is the night field from their site. */
+:root {
+  --soft: #d5e0e7;
+  --color: #1b3158;
+  --color-medium: #2f578c;
+  --dark-blue: #12192b;
+  --color-soft: #acc6e9;
+}
+
+@media screen and (max-width: 991px) {
+  body, .cycle {
+    --soft: #d5e0e7;
+    --color: #1b3158;
+    --color-medium: #2f578c;
+    --dark-blue: #12192b;
+    --color-soft: #acc6e9;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  body, .importance__bottom__left, .cycle__top__parags, .importance__bottom__left-copy {
+    --soft: #d5e0e7;
+    --color: #1b3158;
+    --color-medium: #2f578c;
+    --dark-blue: #12192b;
+    --color-soft: #acc6e9;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  body, .onclock__pendulum__svg.onclock__lines__opac {
+    --soft: #d5e0e7;
+    --color: #1b3158;
+    --color-medium: #2f578c;
+    --dark-blue: #12192b;
+    --color-soft: #acc6e9;
+  }
+}
+
+section.onclock.section-blue {
+  background: #12192b;
+}
+
+body:has(.is-follow-path) canvas,
+body:has(.is-lamp-active) canvas {
+  background: #12192b;
+}
+
 /* ============================================================================
    ContextLock additions to the landing page
    ----------------------------------------------------------------------------
@@ -18,7 +67,10 @@
 .hero__title__h1 {
   font-size: clamp(3rem, 15vw, 19rem);
   letter-spacing: clamp(0.5rem, 2.6vw, 2.6rem);
-  line-height: 1;
+  /* Space Grotesk's g descends past a line-height of 1, and the title mask
+     clips to that box, which slices the bottom of the letter. */
+  line-height: 1.25;
+  overflow: visible;
 }
 
 /* The eyebrow was left at the template's fixed 1.9rem while the wordmark
@@ -60,20 +112,53 @@
 .subtitle__text .js-words + .js-words { margin-left: 0.55em; }
 
 /* ============================================================================
-   Display face for the hero wordmark
+   Arc type
+   ----------------------------------------------------------------------------
+   Arc sets its headlines in Space Grotesk Light, body in DM Sans and eyebrows
+   in Space Mono. The faces are declared in webflow.css in place of the
+   template's; this block covers the roles the template left to the browser
+   default and the eyebrow labels, which had no face of their own.
    ========================================================================== */
-@font-face {
-  font-family: "Security Company";
-  src: url("/fonts/Security%20Company.ttf") format("truetype");
+body,
+.body {
+  font-family: "DM Sans", Arial, sans-serif;
   font-weight: 400;
-  font-style: normal;
-  /* swap: the wordmark is the first thing painted, so showing it in the
-     fallback beats holding the hero blank while a 735KB face downloads. */
-  font-display: swap;
 }
 
 .hero__title__h1 {
-  font-family: "Security Company", Editorial, Georgia, serif;
+  font-family: "Space Grotesk", Arial, sans-serif;
+  font-weight: 300;
+  letter-spacing: clamp(0.1rem, 0.6vw, 0.6rem);
+  text-transform: none;
+}
+
+/* The intro timeline still queries a second heading. It stays in the DOM
+   and out of the layout so the wordmark is the single name BagFi. */
+.hero__title__h1--spare {
+  position: absolute;
+  width: 0;
+  height: 0;
+  margin: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.subtitle__text,
+.hero__subt__text,
+.hero__scroll__text,
+.section-index__index,
+.onclock__word__text,
+.insights__text,
+.cl-hero-cta__primary,
+.cl-hero-cta__secondary {
+  font-family: "Space Mono", monospace;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.section-index__index {
+  letter-spacing: 0;
 }
 
 /* --- hero call to action -------------------------------------------------- */
@@ -106,9 +191,8 @@
    very nearly invisible. */
 .cl-hero-cta__primary {
   background: var(--soft, #fef1d0);
-  color: #002e77;
+  color: var(--color, #1b3158);
   border: 1px solid var(--soft, #fef1d0);
-  font-family: var(--medium), system-ui, sans-serif;
 }
 .cl-hero-cta__primary:hover {
   transform: translateY(-2px);
@@ -156,7 +240,7 @@
   .cl-hero-cta__secondary:hover { transform: none; }
 }
 
-/* --- Chainlink mark inside the stats ring ---------------------------------
+/* --- USDC coin inside the stats ring -------------------------------------
    The label this replaces was dragged into the ring by two negative offsets
    tuned to a single line of 1.9rem text (margin-top -4.5rem on the wrapper,
    top -5.3rem on the paragraph). A block with different dimensions inherits
@@ -178,8 +262,9 @@
 
 .cl-stats-mark {
   display: block;
-  width: clamp(110px, 15vw, 250px);
+  width: clamp(72px, 8vw, 140px);
   height: auto;
+  border-radius: 50%;
 }
 
 /* --- retired audio affordances --------------------------------------------
@@ -248,6 +333,158 @@
   display: none;
 }
 
+/* The hidden nodes above still register ScrollTriggers. With no box, GSAP
+   clamps their start to the end of the page, so reaching the bottom used to
+   wake the footer's 3D scene (the ContextLock book) on the fixed canvas
+   (z-index 2) and paint it over the pendulum. The last two sections sit above
+   the canvas instead; neither uses it. */
+.encouter,
+.cl-closing {
+  position: relative;
+  z-index: 3;
+}
+
+/* ============================================================================
+   Closing section
+   ----------------------------------------------------------------------------
+   Visible end of the page: the offer, the three tiers, the door to /market.
+   Same dark ground as 03, same type roles as the rest of the page.
+   ========================================================================== */
+.cl-closing {
+  background: var(--dark-blue, #12192b);
+  color: var(--soft, #d5e0e7);
+  padding: clamp(6rem, 14vh, 11rem) clamp(1.5rem, 6vw, 8rem) clamp(3rem, 6vh, 5rem);
+}
+
+.cl-closing__hold {
+  max-width: 92rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.cl-closing__eyebrow {
+  color: var(--color-soft, #acc6e9);
+  margin-bottom: clamp(1.5rem, 3vh, 2.5rem);
+}
+
+.cl-closing__title {
+  font-family: "Space Grotesk", Arial, sans-serif;
+  font-weight: 300;
+  font-size: clamp(3rem, 7vw, 8.5rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  margin: 0 0 clamp(1.5rem, 3vh, 2.5rem);
+  color: var(--soft, #d5e0e7);
+}
+
+.cl-closing__text {
+  font-family: "DM Sans", Arial, sans-serif;
+  font-weight: 400;
+  font-size: clamp(1.15rem, 1.5vw, 1.7rem);
+  line-height: 1.5;
+  max-width: 56rem;
+  margin: 0 0 clamp(2.5rem, 5vh, 4rem);
+  color: color-mix(in srgb, var(--soft, #d5e0e7) 82%, transparent);
+}
+
+.cl-closing__tiers {
+  list-style: none;
+  margin: 0 0 clamp(1rem, 2vh, 2rem);
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.8rem, 1.4vw, 1.5rem);
+  width: min(100%, 64rem);
+}
+
+.cl-closing__tier {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: clamp(1.2rem, 2vw, 2rem) clamp(1rem, 1.6vw, 1.6rem);
+  border: 1px solid rgba(172, 198, 233, 0.35);
+  border-radius: 1.25rem;
+  /* Literal values: inside .section-blue the template remaps --color to the
+     light tone, so var(--color) here would paint the cards light. */
+  background: rgba(47, 87, 140, 0.32);
+}
+
+.cl-closing__tier-name,
+.cl-closing__tier-terms {
+  font-family: "Space Mono", monospace;
+  font-weight: 400;
+  font-size: clamp(11px, 0.75vw, 15px);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #acc6e9;
+}
+
+.cl-closing__tier-ltv {
+  font-family: "Space Grotesk", Arial, sans-serif;
+  font-weight: 300;
+  font-size: clamp(1.8rem, 3vw, 3.4rem);
+  line-height: 1;
+  color: var(--soft, #d5e0e7);
+}
+
+.cl-closing__cta {
+  margin-top: clamp(1.5rem, 3vh, 2.5rem);
+}
+
+.cl-closing__foot {
+  margin-top: clamp(4rem, 9vh, 7rem);
+  padding-top: 1.5rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-soft, #acc6e9) 25%, transparent);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-family: "Space Mono", monospace;
+  font-size: clamp(11px, 0.7vw, 14px);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(172, 198, 233, 0.8);
+}
+
+/* Same remap: the shared primary button reads var(--color) for its text and
+   would come out light-on-light here. */
+.cl-closing .cl-hero-cta__primary {
+  color: #1b3158;
+  background: #d5e0e7;
+  border-color: #d5e0e7;
+}
+.cl-closing .cl-hero-cta__primary:hover {
+  background: #fff;
+  border-color: #fff;
+}
+.cl-closing .cl-hero-cta__secondary {
+  color: #d5e0e7;
+  border-color: rgba(213, 224, 231, 0.55);
+}
+.cl-closing .cl-hero-cta__secondary:hover {
+  border-color: #d5e0e7;
+  background: rgba(213, 224, 231, 0.12);
+}
+
+@media (max-width: 767px) {
+  .cl-closing__tiers {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* The ring texture is the template's bright blue and cream cloud pattern.
+   Pulled down in saturation and brightness it lands on the palette's
+   validator blue and static ether without touching the asset. */
+.stats_stats__pattern {
+  background: var(--color, #1b3158);
+}
+.stats_stats__pattern img {
+  filter: saturate(0.45) brightness(0.78);
+}
+
 /* ============================================================================
    Body copy scale
    ----------------------------------------------------------------------------
@@ -265,6 +502,238 @@
   line-height: 1.45;
 }
 
+/* The template scales the root font-size with the viewport, down to ~5px on
+   a phone and ~8.5px on a 768px tablet, so rem sizes collapse with it. These
+   are px floors through the tablet range. */
+@media (max-width: 1024px) {
+  .parag,
+  .parag.importance__text {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .small-parag {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .hero__subt__text {
+    font-size: 12px;
+  }
+  .hero__scroll__text,
+  .insights__text,
+  .subtitle__text {
+    font-size: 11px;
+  }
+  .onclock__word__text {
+    font-size: 11px;
+  }
+  .cl-hero-cta__primary,
+  .cl-hero-cta__secondary {
+    font-size: 13px;
+    padding: 13px 22px;
+    letter-spacing: 0.04em;
+  }
+  .cl-closing__eyebrow,
+  .cl-closing__tier-name,
+  .cl-closing__tier-terms,
+  .cl-closing__foot {
+    font-size: 11px;
+  }
+  .cl-closing__text {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .cl-closing__tier-ltv {
+    font-size: 30px;
+  }
+}
+
+/* Scroll performance on phones and tablets.
+
+   The template paints a full-screen fixed grain (.pattern) over everything
+   with mix-blend-mode: luminosity. On a phone that forces the compositor to
+   re-blend the whole viewport on every scroll frame, which is the stutter.
+   The letter-split titles also put will-change on every letter (hundreds of
+   compositor layers), and the paragraphs carry animated gradient masks.
+   None of it is legible on a small screen, so it is all turned off there. */
+@media (max-width: 1024px) {
+  /* Pinch zoom stays at 1. A wider decoration must not widen the page,
+     which is what makes Safari shrink the whole layout to fit. */
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    touch-action: pan-y;
+  }
+  /* The page behind the enter screen cannot move. When that screen leaves,
+     the hero is what sits at the top. */
+  body:has(.preloader) {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    height: 100%;
+  }
+  .pattern {
+    display: none !important;
+  }
+  .js-words div {
+    will-change: auto !important;
+  }
+  p.parag,
+  .hero__title__h1,
+  .hero__subt,
+  .note__video__wrap,
+  .stats__spiral,
+  .subtitle,
+  .description,
+  .title_serif,
+  .title_sans {
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+  }
+  canvas.webgl {
+    /* Once frozen, the canvas is a plain bitmap; keep it off the
+       compositor's blend path. */
+    mix-blend-mode: normal !important;
+  }
+  /* On phones and tablets the 3D scene is not started at all (app.module.js
+     removes the canvas and adds body.no-webgl). The canvas was the only thing
+     painting the dark field behind the light type, so the hero paints that
+     field itself: the same flat navy as the quoting section, no per-frame work
+     and no terrain. */
+  body.no-webgl .hero {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    height: 100svh;
+    background-color: #12192b;
+    background-image: none;
+  }
+  /* The pills stay side by side, the way they sit on desktop, instead of
+     stretching into two full-width bars. */
+  body.no-webgl .cl-hero-cta {
+    width: auto;
+    flex-wrap: nowrap;
+    padding: 0 16px;
+  }
+  body.no-webgl .cl-hero-cta__primary,
+  body.no-webgl .cl-hero-cta__secondary {
+    flex: 0 1 auto;
+    width: auto;
+    font-size: 11px;
+    padding: 12px 16px;
+  }
+  /* Quoting section. Desktop puts the title on the left and the ring on the
+     right over this same navy. The template's phone rules stack them and
+     shrink the type until the block reads as empty, and GSAP parks the ring
+     at scale 0 until its scroll trigger. Both are undone here so the section
+     shows the title, the line and the ring immediately. */
+  body.no-webgl .stats__hold {
+    flex-flow: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 100svh;
+    padding: 16vh 18px 12vh;
+    box-sizing: border-box;
+  }
+  body.no-webgl .stats__text {
+    align-items: flex-start;
+    flex: 1 1 auto;
+    width: auto;
+    max-width: 54%;
+  }
+  body.no-webgl .stats__text__serif,
+  body.no-webgl .stats__text__sans,
+  body.no-webgl .stats__text__parag {
+    text-align: left;
+  }
+  body.no-webgl .stats .title_serif,
+  body.no-webgl .stats .title_sans {
+    font-size: 34px;
+    line-height: 1.02;
+  }
+  body.no-webgl .stats__text__sans {
+    margin-top: 0;
+  }
+  body.no-webgl .stats__text__parag {
+    width: auto;
+    margin-top: 16px;
+  }
+  body.no-webgl .stats .small-parag {
+    font-size: 13px;
+    line-height: 1.45;
+  }
+  body.no-webgl .stats__stats {
+    flex: 0 0 auto;
+    width: 42vw;
+  }
+  body.no-webgl .stats_stats__pattern,
+  body.no-webgl .stats_stats__pattern img,
+  body.no-webgl .stats_stats__solid,
+  body.no-webgl .stats_stats__border {
+    transform: none !important;
+  }
+  body.no-webgl .stats_stats__pattern {
+    width: 42vw;
+    background: #1b3158;
+  }
+  /* The lines meet on a tiny texture disc that only reads on the desktop
+     framing. On a phone it sits as a stray blob above the ring. */
+  body.no-webgl .onclock__spiral__center.stats__spiral__center__pattern {
+    display: none;
+  }
+  body.no-webgl .stats_stats__solid {
+    width: 34vw;
+  }
+  body.no-webgl .stats_stats__border {
+    width: 30vw;
+  }
+  body.no-webgl .onclock__spiral.stats__spiral {
+    width: 160%;
+    margin-top: -6vh;
+    left: -30%;
+  }
+  .cursor-insight,
+  .trg-sound,
+  .trg-note {
+    display: none !important;
+  }
+}
+
+/* Phones. The insights tab is parked off the left edge and only its tail
+   peeks in. There is no hover to slide it open, so the clipped letters stay
+   out of the way. The closing block stacks and tightens. */
+@media (max-width: 767px) {
+  .insigh-pannel {
+    display: none;
+  }
+  .cl-hero-cta {
+    gap: 10px;
+    margin-top: 28px;
+    padding: 0 20px;
+  }
+  .cl-closing {
+    padding: 64px 20px 32px;
+  }
+  .cl-closing__title {
+    font-size: 40px;
+    line-height: 1.02;
+  }
+  .cl-closing__text {
+    max-width: 34ch;
+  }
+  .cl-closing__tier {
+    padding: 16px 18px;
+    border-radius: 14px;
+  }
+  .cl-closing__foot {
+    margin-top: 40px;
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+}
+
 /* ============================================================================
    Ledger mark at the centre of the clock
    ----------------------------------------------------------------------------
@@ -273,23 +742,23 @@
    clipping it to a disc would crop the word.
    ========================================================================== */
 .onclock__spiral__center.cl-ledger-center {
-  width: clamp(150px, 20vw, 330px);
-  aspect-ratio: auto;
+  width: clamp(140px, 16vw, 240px);
+  aspect-ratio: 1;
   border: none;
-  border-radius: 0;
-  overflow: visible;
+  border-radius: 50%;
+  overflow: hidden;
   display: grid;
   place-items: center;
-  /* The ring's radiating lines converge here, so the mark needs to sit above
-     them rather than be threaded through. */
+  /* The ring's radiating lines converge here, so the coin sits above them. */
   z-index: 3;
 }
 
 .cl-ledger {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
-  filter: drop-shadow(0 0 26px rgba(8, 18, 74, 0.55));
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 /* ============================================================================
@@ -315,15 +784,58 @@
   object-fit: contain;
 }
 
-/* Sized per mark: the Chainlink hexagon is near-square, Ledger is a 3:1
-   wordmark, and ENS sits between the two. Each gets the width that leaves a
-   comfortable margin inside the disc rather than one shared value. */
-.cl-pend-mark--chain  { width: 46%; }
-.cl-pend-mark--ens    { width: 58%; }
-.cl-pend-mark--ledger { width: 66%; }
+/* Collateral logos stacked in each side ball. One is visible; the rest sit
+   underneath and crossfade when that ball meets the middle one. */
+.cl-pend-coins {
+  position: absolute;
+  inset: 0;
+}
 
-/* All three pendulum balls take the white ground the middle one had, so the
-   marks sit on a consistent disc rather than one floating on the page colour. */
+.cl-pend-mark--coin {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 220ms ease-out;
+}
+
+.cl-pend-mark--coin[data-on='1'] {
+  opacity: 1;
+}
+
+/* The swing fades the disc between beats, so one side reads as an empty ring
+   and the pair looks fixed. The rings still swing. The mark stays up. */
+.encounter__pendulum .pendulum__ball__img:not(.pendulum__ball__img__middle) {
+  opacity: 1 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cl-pend-mark--coin {
+    transition: none;
+  }
+}
+
+/* The product mark fills the middle disc. The file is a wide illustration,
+   so cover crops the side ornaments and keeps the bag centred. */
+.pendulum__ball__img__middle .cl-pend-mark--logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 168%;
+  height: auto;
+  max-width: none;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  border-radius: 0;
+}
+
 .pendulum__ball__img {
   background-color: var(--white);
+}
+
+.pendulum__ball__img.pendulum__ball__img__middle {
+  background-color: #f3eee4;
 }

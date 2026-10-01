@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Wallet } from 'lucide-react';
 import { useWalletSession } from '@/lib/studio/wallet-session';
+import { arc, arcTestnet } from '@/lib/market/arc';
 import { isExecutionChain } from '@/lib/studio/wagmi';
 
 export function WalletChipLive() {
@@ -76,7 +77,8 @@ function ChipBody({
     );
   }
 
-  const onTestnet = isExecutionChain(chainId);
+  const onArc = chainId === arc.id || chainId === arcTestnet.id;
+  const onTestnet = isExecutionChain(chainId) || onArc;
 
   return (
     <span className="cl-row" style={{ gap: 6 }}>

@@ -14,21 +14,25 @@
  *  - the runtime itself, dynamically imported and mounted only once the session
  *    is active.
  *
- * A returning visitor is activated during the first render from wagmi's own
- * persisted storage, so they never see the workspace mount without a wallet and
- * then re-mount with one.
+ * A returning visitor activates after hydration, once the runtime chunk is
+ * loaded. The first paint matches the server (public shell). The page is not
+ * unmounted while that chunk arrives.
  */
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 
 interface WalletSessionValue {
-  /** True once the heavy wallet runtime should be mounted. */
+  /** True once wagmi is mounted and hooks are safe to call. */
   activated: boolean;
+  /** True once the runtime chunk should start loading. The page stays up. */
+  booting: boolean;
   /** Set when the user asked to connect, so the runtime can open its modal. */
   autoOpen: boolean;
-  /** Activates the runtime and asks it to open the connect modal. */
+  /** Starts the runtime and asks it to open the connect modal. */
   requestConnect: () => void;
   /** Called by the runtime once it has handled the open request. */
   consumeAutoOpen: () => void;
+  /** Called once the runtime is wrapped around the page. */
+  markReady: () => void;
 }
 
 const WalletSessionContext = createContext<WalletSessionValue | null>(null);
@@ -53,21 +57,23 @@ export function WalletSessionProvider({ children }: { children: ReactNode }) {
   // activates right after hydration. Reading storage in the initializer would render a different
   // tree on the client than the server sent and React would throw the hydration away.
   const [activated, setActivated] = useState(false);
+  const [booting, setBooting] = useState(false);
   const [autoOpen, setAutoOpen] = useState(false);
   useEffect(() => {
-    if (hasPersistedConnection()) setActivated(true);
+    if (hasPersistedConnection()) setBooting(true);
   }, []);
 
   const requestConnect = useCallback(() => {
-    setActivated(true);
     setAutoOpen(true);
+    setBooting(true);
   }, []);
 
   const consumeAutoOpen = useCallback(() => setAutoOpen(false), []);
+  const markReady = useCallback(() => setActivated(true), []);
 
   const value = useMemo(
-    () => ({ activated, autoOpen, requestConnect, consumeAutoOpen }),
-    [activated, autoOpen, requestConnect, consumeAutoOpen],
+    () => ({ activated, booting, autoOpen, requestConnect, consumeAutoOpen, markReady }),
+    [activated, booting, autoOpen, requestConnect, consumeAutoOpen, markReady],
   );
 
   return <WalletSessionContext.Provider value={value}>{children}</WalletSessionContext.Provider>;
